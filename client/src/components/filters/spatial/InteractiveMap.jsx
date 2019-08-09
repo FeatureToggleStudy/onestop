@@ -10,7 +10,6 @@ export default class InteractiveMap extends React.Component {
     return (
       <Switch>
         <Route path={ROUTE.collections.path} exact>
-          <CollectionMapContainer selection={true} features={false} />
         </Route>
         <Route path={ROUTE.granules.parameterized}>
           <GranuleMapContainer selection={true} features={false} />

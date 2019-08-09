@@ -15,8 +15,8 @@ const styleOpen = width => {
     flex: '0 0 ' + width,
     width: width,
     minWidth: '3.236em',
-    position: 'relative',
-    overflow: 'hidden',
+    // position: 'relative',
+    // overflow: 'hidden',
     boxShadow: boxShadow,
   }
 }
@@ -28,7 +28,7 @@ const styleClosed = width => {
     flex: '0 0 ' + width,
     width: width,
     position: 'relative',
-    overflow: 'initial',
+    // overflow: 'initial',
     boxShadow: boxShadow,
   }
 }

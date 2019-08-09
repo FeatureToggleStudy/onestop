@@ -13,7 +13,7 @@ const defaultPadding = '1em'
 const styleContainer = {
   minHeight: '100vh',
   width: '100%',
-  overflow: 'hidden',
+  // overflow: 'hidden',
 }
 
 export default class Layout extends React.Component {

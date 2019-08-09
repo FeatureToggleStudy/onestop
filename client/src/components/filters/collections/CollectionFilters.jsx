@@ -8,6 +8,7 @@ import FilterHeading from '../FilterHeading'
 import CollectionTimeFilterContainer from './CollectionTimeFilterContainer'
 import CollectionFacetFilterContainer from './CollectionFacetFilterContainer'
 import CollectionMapFilterContainer from './CollectionMapFilterContainer'
+import CollectionMapContainer from './CollectionMapContainer'
 
 import mapFilterIcon from '../../../../img/font-awesome/white/svg/globe.svg'
 import timeFilterIcon from '../../../../img/font-awesome/white/svg/calendar.svg'
@@ -84,7 +85,7 @@ class CollectionFilters extends React.Component {
       {
         name: 'location',
         heading: <FilterHeading icon={mapFilterIcon} text="Location" />,
-        content: <CollectionMapFilterContainer isOpen={this.state.location} />,
+      content: <CollectionMapFilterContainer isOpen={this.state.location} ><CollectionMapContainer selection={true} features={false} /></CollectionMapFilterContainer>,
       },
       {
         name: 'time',

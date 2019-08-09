@@ -21,7 +21,7 @@ const styleMapFilter = {
   ...FilterStyles.MEDIUM,
   ...{
     padding: '0.618em',
-    position: 'relative',
+    // position: 'relative',
   },
 }
 
@@ -340,6 +340,9 @@ export default class MapFilter extends React.Component {
           </legend>
           {inputColumn}
         </fieldset>
+        <div style={{position:'absolute', right: 0, top:0, height: '15em', width: '20em', zIndex: 100}}>
+          {this.props.children}
+        </div>
         <div style={styleSeparator} />
         <h4 style={{paddingLeft: '0.308em'}}>Additional Filtering Options:</h4>
         {excludeGlobalCheckbox}
