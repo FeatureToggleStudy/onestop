@@ -22,6 +22,7 @@ export default class Content extends React.Component {
       leftWidth,
       leftOpen,
       leftVisible,
+      leftCallback,
       right,
       rightWidth,
       rightOpen,
@@ -39,6 +40,7 @@ export default class Content extends React.Component {
             padding={padding}
             open={leftOpen}
             visible={leftVisible}
+            callback={leftCallback}
             key={'left'}
           />,
           <Middle

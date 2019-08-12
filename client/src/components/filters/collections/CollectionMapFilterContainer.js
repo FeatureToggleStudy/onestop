@@ -15,6 +15,7 @@ const mapStateToProps = state => {
     showMap: state.layout.showMap,
     geoJSON: state.search.collectionFilter.geoJSON,
     excludeGlobal: state.search.collectionFilter.excludeGlobal,
+    leftOffset: state.layout.leftWidth,
   }
 }
 

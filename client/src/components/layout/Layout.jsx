@@ -31,6 +31,7 @@ export default class Layout extends React.Component {
       leftWidth,
       leftOpen,
       leftVisible,
+      leftCallback,
       middle,
       middleMaxWidth,
       right,
@@ -41,7 +42,6 @@ export default class Layout extends React.Component {
     } = this.props
 
     const styles = Object.assign({}, styleContainer, style)
-
     return (
       <Background>
         <FlexColumn
@@ -61,6 +61,7 @@ export default class Layout extends React.Component {
               leftWidth={leftWidth}
               leftOpen={leftOpen}
               leftVisible={leftVisible}
+              leftCallback={leftCallback}
               middle={middle}
               middleMaxWidth={middleMaxWidth}
               right={right}

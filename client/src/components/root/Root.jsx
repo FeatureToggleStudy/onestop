@@ -86,7 +86,7 @@ export default class Root extends React.Component {
   }
 
   render() {
-    const {location, leftOpen, rightOpen} = this.props
+    const {location, leftOpen, rightOpen, leftCallback} = this.props
 
     const bannerVisible = isHome(location.pathname)
     const leftVisible = isSearch(location.pathname)
@@ -184,6 +184,7 @@ export default class Root extends React.Component {
           leftWidth={leftOpen ? '20em' : '2em'}
           leftOpen={leftOpen}
           leftVisible={leftVisible}
+          leftCallback={leftCallback}
           /* - Middle - */
           middle={middle}
           /* - Right - */

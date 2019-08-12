@@ -85,7 +85,11 @@ class CollectionFilters extends React.Component {
       {
         name: 'location',
         heading: <FilterHeading icon={mapFilterIcon} text="Location" />,
-      content: <CollectionMapFilterContainer isOpen={this.state.location} ><CollectionMapContainer selection={true} features={false} /></CollectionMapFilterContainer>,
+        content: (
+          <CollectionMapFilterContainer isOpen={this.state.location}>
+            <CollectionMapContainer selection={true} features={false} />
+          </CollectionMapFilterContainer>
+        ),
       },
       {
         name: 'time',

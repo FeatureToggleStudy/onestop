@@ -7,6 +7,7 @@ import {
   TOGGLE_MAP,
   SET_HEADER_MENU_OPEN,
   SHOW_GRANULE_VIDEO,
+  SET_LEFT_WIDTH,
 } from '../actions/LayoutActions'
 
 import {LOCATION_CHANGE} from 'connected-react-router'
@@ -14,16 +15,20 @@ import {LOCATION_CHANGE} from 'connected-react-router'
 export const initialState = Immutable({
   showLeft: true,
   leftOpen: true,
+  leftWidth: 0,
   showRight: false,
   showMap: false,
   showAppliedFilterBubbles: false,
   onDetailPage: false,
   headerMenuOpen: false,
   granuleVideo: null,
+  interactiveMapHeight: 0,
 })
 
 export const layout = (state = initialState, action) => {
   switch (action.type) {
+    case SET_LEFT_WIDTH:
+      return Immutable.set(state, 'leftWidth', action.width)
     case LOCATION_CHANGE:
       if (!action.payload) {
         return state

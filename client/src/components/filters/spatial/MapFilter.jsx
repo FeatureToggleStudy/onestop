@@ -16,6 +16,7 @@ import {
   FilterStyles,
   SiteColors,
 } from '../../../style/defaultStyles'
+// import MapHook from './MapHook'
 
 const styleMapFilter = {
   ...FilterStyles.MEDIUM,
@@ -340,9 +341,18 @@ export default class MapFilter extends React.Component {
           </legend>
           {inputColumn}
         </fieldset>
-        <div style={{position:'absolute', right: 0, top:0, height: '15em', width: '20em', zIndex: 100}}>
+        <div
+          style={{
+            position: 'absolute',
+            left: this.props.leftOffset,
+            right: 0,
+            top: 0,
+            zIndex: 100,
+          }}
+        >
           {this.props.children}
         </div>
+
         <div style={styleSeparator} />
         <h4 style={{paddingLeft: '0.308em'}}>Additional Filtering Options:</h4>
         {excludeGlobalCheckbox}

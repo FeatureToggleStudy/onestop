@@ -13,6 +13,14 @@ export const closeLeft = () => {
   }
 }
 
+export const SET_LEFT_WIDTH = 'SET_LEFT_WIDTH'
+export const setLeftWidth = width => {
+  return {
+    type: SET_LEFT_WIDTH,
+    width: width,
+  }
+}
+
 export const TOGGLE_RIGHT_OPEN = 'TOGGLE_RIGHT_OPEN'
 export const openRight = () => {
   return {
