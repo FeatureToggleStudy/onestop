@@ -104,9 +104,13 @@ class Map extends React.Component {
     if (property === 'max-height') {
       this.resize()
     }
+      console.log(event.propertyName, this.container.getBoundingClientRect().height)
+
+    if(event.propertyName =='max-height'){
+      console.log('updating redux')
     this.props.setInteractiveMapHeight(
       this.container.getBoundingClientRect().height
-    )
+    )}
   }
 
   initialState = () => {
@@ -211,6 +215,7 @@ class Map extends React.Component {
         }
         if (shouldClose) {
           setTimeout(() => this.setState({display: 'none', opacity: '0'}), 500)
+          this.props.setInteractiveMapHeight(0)
         }
 
         const immediateTransition = shouldOpen

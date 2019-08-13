@@ -50,6 +50,7 @@ const styleMapSpacer = (open, display, height) => {
       ? 'height .5s 0.0s, width 0.2s 0.2s' // width needs to start opening before max-height completes, or the transitionEnd check will not be able to compute height
       : 'width 0.2s 0.2s, height 0.2s 0.4s',
     height: height,
+    width: '100%',
     display: display,
   }
 }
@@ -74,19 +75,29 @@ export default class Root extends React.Component {
       map.invalidateSize()
     } // Necessary to redraw map which isn't initially visible
 
-    if (this.props.showMap != nextProps.showMap) {
+
+    console.log(this.props.showMap , nextProps.showMap , this.props.mapHeight , nextProps.mapHeight)
+    if (this.props.showMap != nextProps.showMap || this.props.mapHeight != nextProps.mapHeight) {
       this.setState(prevState => {
         const isOpen = prevState.open
         const isDisplayed = prevState.display === 'block'
         const shouldClose = isOpen && isDisplayed
-        const shouldOpen = !isOpen && !isDisplayed
+        const shouldOpen = !isOpen && !isDisplayed && nextProps.mapHeight != 0
+        if (!shouldOpen && !shouldClose) {
+          console.log('exit early')
+          return {}
+        }
+        console.log('isopen', isOpen, 'map hieght', nextProps.mapHeight, 'should open', shouldOpen)
+        // TODO there's something going on with the order of events, where height isn't available the first time we try to show it, which is why it doesn't open the spacer beneath yet...
+        // .... also it's not actually retriggering this code.....
 
         // these transitions do occasionally have timing issues, but I've only seen them when rapidly toggling a single element on and off..
+        // the first time you open it, the map looks really really dumb - background opens way after. after that it's fine bc the mapheight is already in redux and such. eww.
         if (shouldOpen) {
           setTimeout(
             () =>
               this.setState({
-                height: this.props.mapHeight,
+                height: nextProps.mapHeight,
               }),
             15
           )
