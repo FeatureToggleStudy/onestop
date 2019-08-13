@@ -75,9 +75,16 @@ export default class Root extends React.Component {
       map.invalidateSize()
     } // Necessary to redraw map which isn't initially visible
 
-
-    console.log(this.props.showMap , nextProps.showMap , this.props.mapHeight , nextProps.mapHeight)
-    if (this.props.showMap != nextProps.showMap || this.props.mapHeight != nextProps.mapHeight) {
+    console.log(
+      this.props.showMap,
+      nextProps.showMap,
+      this.props.mapHeight,
+      nextProps.mapHeight
+    )
+    if (
+      this.props.showMap != nextProps.showMap ||
+      this.props.mapHeight != nextProps.mapHeight
+    ) {
       this.setState(prevState => {
         const isOpen = prevState.open
         const isDisplayed = prevState.display === 'block'
@@ -87,7 +94,14 @@ export default class Root extends React.Component {
           console.log('exit early')
           return {}
         }
-        console.log('isopen', isOpen, 'map hieght', nextProps.mapHeight, 'should open', shouldOpen)
+        console.log(
+          'isopen',
+          isOpen,
+          'map hieght',
+          nextProps.mapHeight,
+          'should open',
+          shouldOpen
+        )
         // TODO there's something going on with the order of events, where height isn't available the first time we try to show it, which is why it doesn't open the spacer beneath yet...
         // .... also it's not actually retriggering this code.....
 

@@ -104,13 +104,12 @@ class Map extends React.Component {
     if (property === 'max-height') {
       this.resize()
     }
-      console.log(event.propertyName, this.container.getBoundingClientRect().height)
 
-    if(event.propertyName =='max-height'){
-      console.log('updating redux')
-    this.props.setInteractiveMapHeight(
-      this.container.getBoundingClientRect().height
-    )}
+    if (event.propertyName == 'max-height') {
+      this.props.setInteractiveMapHeight(
+        this.container.getBoundingClientRect().height
+      )
+    }
   }
 
   initialState = () => {
