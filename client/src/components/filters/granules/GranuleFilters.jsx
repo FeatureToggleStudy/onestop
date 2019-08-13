@@ -9,6 +9,7 @@ import FilterHeading from '../FilterHeading'
 import GranuleTimeFilterContainer from './GranuleTimeFilterContainer'
 import GranuleFacetFilterContainer from './GranuleFacetFilterContainer'
 import GranuleMapFilterContainer from './GranuleMapFilterContainer'
+import GranuleMapContainer from './GranuleMapContainer'
 
 import mapFilterIcon from '../../../../img/font-awesome/white/svg/globe.svg'
 import timeFilterIcon from '../../../../img/font-awesome/white/svg/calendar.svg'
@@ -85,7 +86,11 @@ class GranuleFilters extends React.Component {
       {
         name: 'location',
         heading: <FilterHeading icon={mapFilterIcon} text="Location" />,
-        content: <GranuleMapFilterContainer isOpen={this.state.location} />,
+        content: (
+          <GranuleMapFilterContainer isOpen={this.state.location}>
+            <GranuleMapContainer selection={true} features={false} />
+          </GranuleMapFilterContainer>
+        ),
       },
       {
         name: 'time',

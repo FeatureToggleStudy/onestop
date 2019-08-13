@@ -13,7 +13,6 @@ const defaultPadding = '1em'
 const styleContainer = {
   minHeight: '100vh',
   width: '100%',
-  // overflow: 'hidden',
 }
 
 export default class Layout extends React.Component {
@@ -42,6 +41,7 @@ export default class Layout extends React.Component {
     } = this.props
 
     const styles = Object.assign({}, styleContainer, style)
+
     return (
       <Background>
         <FlexColumn

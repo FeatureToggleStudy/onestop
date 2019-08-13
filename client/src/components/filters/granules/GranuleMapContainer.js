@@ -5,6 +5,7 @@ import {
   granuleRemoveGeometry,
 } from '../../../actions/routing/GranuleSearchStateActions'
 import {submitGranuleSearch} from '../../../actions/routing/GranuleSearchRouteActions'
+import {setInteractiveMapHeight} from '../../../actions/LayoutActions'
 
 import {withRouter} from 'react-router'
 
@@ -24,6 +25,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     submit: () => {
       dispatch(submitGranuleSearch(ownProps.history, ownProps.match.params.id))
     },
+    setInteractiveMapHeight: width => dispatch(setInteractiveMapHeight(width)),
   }
 }
 

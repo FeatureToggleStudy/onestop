@@ -16,13 +16,11 @@ import {
   FilterStyles,
   SiteColors,
 } from '../../../style/defaultStyles'
-// import MapHook from './MapHook'
 
 const styleMapFilter = {
   ...FilterStyles.MEDIUM,
   ...{
     padding: '0.618em',
-    // position: 'relative',
   },
 }
 
@@ -79,6 +77,16 @@ const styleTextBox = {
 const styleSeparator = {
   borderBottom: `1px solid ${FilterColors.TEXT}`,
   margin: '1em 0',
+}
+
+const styleInteractiveMapContainer = leftOffset => {
+  return {
+    position: 'absolute',
+    left: leftOffset,
+    right: 0,
+    top: 0,
+    zIndex: 100,
+  }
 }
 
 export default class MapFilter extends React.Component {
@@ -341,15 +349,7 @@ export default class MapFilter extends React.Component {
           </legend>
           {inputColumn}
         </fieldset>
-        <div
-          style={{
-            position: 'absolute',
-            left: this.props.leftOffset,
-            right: 0,
-            top: 0,
-            zIndex: 100,
-          }}
-        >
+        <div style={styleInteractiveMapContainer(this.props.leftOffset)}>
           {this.props.children}
         </div>
 
