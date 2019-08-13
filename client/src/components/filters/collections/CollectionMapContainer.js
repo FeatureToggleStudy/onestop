@@ -5,6 +5,7 @@ import {
   collectionRemoveGeometry,
 } from '../../../actions/routing/CollectionSearchStateActions'
 import {submitCollectionSearch} from '../../../actions/routing/CollectionSearchRouteActions'
+import {setInteractiveMapHeight} from '../../../actions/LayoutActions'
 
 import {withRouter} from 'react-router'
 
@@ -24,6 +25,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     submit: () => {
       dispatch(submitCollectionSearch(ownProps.history))
     },
+    setInteractiveMapHeight: width => dispatch(setInteractiveMapHeight(width)),
   }
 }
 

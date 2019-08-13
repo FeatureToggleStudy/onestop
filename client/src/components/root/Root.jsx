@@ -23,7 +23,7 @@ import CollectionSearchLoadingContainer from '../loading/CollectionSearchLoading
 
 import FooterContainer from '../footer/FooterContainer'
 
-import {SiteColors} from '../../style/defaultStyles'
+import {SiteColors, styles} from '../../style/defaultStyles'
 import {isHome, isSearch, validHomePaths, ROUTE} from '../../utils/urlUtils'
 import NotFoundContainer from '../404/NotFoundContainer'
 
@@ -45,23 +45,66 @@ const styleBrowserWarningParagraph = {
   textAlign: 'center',
 }
 
-//web aim suggested styling for hidden content
-const styleHiddenTitleRow = {
-  position: 'absolute',
-  left: '-10000px',
-  top: 'auto',
-  width: '1px',
-  height: '1px',
-  overflow: 'hidden',
+const styleMapSpacer = (open, display, height) => {
+  return {
+    transition: open // immediate transition
+      ? 'height .5s 0.0s, width 0.2s 0.2s' // width needs to start opening before max-height completes, or the transitionEnd check will not be able to compute height
+      : 'width 0.2s 0.2s, height 0.2s 0.4s',
+    height: height,
+    display: display,
+  }
 }
 
 // component
 export default class Root extends React.Component {
   constructor(props) {
     super(props)
+    const {showMap} = this.props
     // use state to prevent browser support check on every render
     this.state = {
       browserUnsupported: browserUnsupported(),
+      open: showMap,
+      display: showMap ? 'block' : 'none',
+      height: showMap ? 'initial' : '0em',
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let {map} = this.state
+    if (map) {
+      map.invalidateSize()
+    } // Necessary to redraw map which isn't initially visible
+
+    if (this.props.showMap != nextProps.showMap) {
+      this.setState(prevState => {
+        const isOpen = prevState.open
+        const isDisplayed = prevState.display === 'block'
+        const shouldClose = isOpen && isDisplayed
+        const shouldOpen = !isOpen && !isDisplayed
+
+        // these transitions do occasionally have timing issues, but I've only seen them when rapidly toggling a single element on and off..
+        if (shouldOpen) {
+          setTimeout(
+            () =>
+              this.setState({
+                height: this.props.mapHeight,
+              }),
+            15
+          )
+        }
+        if (shouldClose) {
+          setTimeout(() => this.setState({display: 'none'}), 500)
+        }
+
+        const immediateTransition = shouldOpen
+          ? {display: 'block'}
+          : shouldClose
+            ? {
+                height: '0em',
+              }
+            : {}
+        return {open: !isOpen, ...immediateTransition}
+      })
     }
   }
 
@@ -86,14 +129,21 @@ export default class Root extends React.Component {
   }
 
   render() {
-    const {location, leftOpen, rightOpen, leftCallback} = this.props
+    const {
+      location,
+      leftOpen,
+      rightOpen,
+      leftCallback,
+      showMap,
+      mapHeight,
+    } = this.props
 
     const bannerVisible = isHome(location.pathname)
     const leftVisible = isSearch(location.pathname)
     const rightVisible = false
 
     const titleRow = (
-      <div style={styleHiddenTitleRow}>
+      <div style={styles.hideOffscreen}>
         <Switch>
           <Route path={ROUTE.collections.path} exact>
             <h1 key="collection-result-title">Collection search results</h1>
@@ -105,8 +155,10 @@ export default class Root extends React.Component {
       </div>
     )
 
+    const {open, display, height} = this.state
     const middle = (
       <div style={{width: '100%'}}>
+        <div style={styleMapSpacer(open, display, height)} />
         <Switch>
           {/*Each page inside this switch should have a Meta!*/}
           <Route path={`/:path(${validHomePaths.join('|')})`} exact>

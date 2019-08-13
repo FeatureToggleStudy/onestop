@@ -13,6 +13,14 @@ export const closeLeft = () => {
   }
 }
 
+export const INTERACTIVE_MAP_HEIGHT = 'INTERACTIVE_MAP_HEIGHT'
+export const setInteractiveMapHeight = height => {
+  return {
+    type: INTERACTIVE_MAP_HEIGHT,
+    height: height,
+  }
+}
+
 export const SET_LEFT_WIDTH = 'SET_LEFT_WIDTH'
 export const setLeftWidth = width => {
   return {

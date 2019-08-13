@@ -8,6 +8,7 @@ import {
   SET_HEADER_MENU_OPEN,
   SHOW_GRANULE_VIDEO,
   SET_LEFT_WIDTH,
+  INTERACTIVE_MAP_HEIGHT,
 } from '../actions/LayoutActions'
 
 import {LOCATION_CHANGE} from 'connected-react-router'
@@ -27,6 +28,8 @@ export const initialState = Immutable({
 
 export const layout = (state = initialState, action) => {
   switch (action.type) {
+    case INTERACTIVE_MAP_HEIGHT:
+      return Immutable.set(state, 'interactiveMapHeight', action.height)
     case SET_LEFT_WIDTH:
       return Immutable.set(state, 'leftWidth', action.width)
     case LOCATION_CHANGE:
