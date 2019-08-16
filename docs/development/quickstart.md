@@ -75,10 +75,14 @@ http://localhost:<port>/onestop
 ```
 
 ### Upload Test Data
+Test data now lives in a separate repo, https://github.com/cedardevs/onestop-test-data.
+In this repo is a utility script, `upload.sh`, that helps load data for OneStop and Inventory Manager. 
+For example, here is how you use it to load a locally running  api-metadata (api-admin)-
 ```
 # The default port is 30098 which is used for Kubernetes development
-./gradlew uploadTestData --apiAdminPort=8098
+./upload.sh OS EdgeCases localhost:30098/onestop-admin
 ```
+Please see that repo's readme for more specific usage details
 
 ## Quick Start (Kubernetes + Helm + Skaffold)
 ### System Requirements
@@ -138,11 +142,13 @@ http://localhost/onestop
 ```
 
 ### Upload Test Data
+Test data now lives in a separate repo, https://github.com/cedardevs/onestop-test-data.
+In this repo is a utility script, `upload.sh`, that helps load data for OneStop and Inventory Manager. 
+For example, here is how you use it to load a locally running  api-metadata (api-admin)-
 ```
 # The default port is 30098 which is used for Kubernetes development
-./gradlew uploadTestData --apiAdminPort=8098
+./upload.sh OS EdgeCases localhost:30098/onestop-admin
 ```
-
 ### Making Helm Chart Changes
 ```
 # Helm helper script for updates
