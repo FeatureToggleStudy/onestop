@@ -14,7 +14,7 @@ const mapDispatchToProps = dispatch => {
     showGranuleVideo: id => dispatch(showGranuleVideo(id)),
   }
 }
-const GranuleListResultContainer = connect(mapStateToProps, mapDispatchToProps)(
+const GranuleListResultContainer = connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(
   GranuleListResult
 )
 export default GranuleListResultContainer

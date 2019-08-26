@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import GranuleListLegend from './GranuleListLegend'
 import Button from '../../common/input/Button'
 import ListView from '../../common/ui/ListView'
+import ListViewFxnal from '../../common/ui/ListViewFxnal'
 import GranuleListResultContainer from './GranuleListResultContainer'
 import {identifyProtocol} from '../../../utils/resultUtils'
 import {boxShadow, SiteColors} from '../../../style/defaultStyles'
@@ -97,7 +98,12 @@ export default class GranuleList extends React.Component {
     const {results, selectVisibleGranules} = this.props
   }
 
-  propsForResult = (item, itemId) => {
+  propsForGranule = (item, itemId, shouldFocus = false) => {
+
+    if(shouldFocus) {
+      console.log("propsForGranule received shouldFocus = true for item == ", item)
+    }
+
     const {featuresEnabled} = this.props
 
     return {
@@ -106,6 +112,7 @@ export default class GranuleList extends React.Component {
       handleCheckboxChange: this.handleCheckboxChange,
       checkGranule: this.isGranuleSelected(itemId),
       featuresEnabled: featuresEnabled,
+      shouldFocus: shouldFocus
     }
   }
 
@@ -114,7 +121,6 @@ export default class GranuleList extends React.Component {
       results,
       returnedHits,
       totalHits,
-      selectCollection,
       fetchMoreResults,
       addFilteredGranulesToCart,
       addFilteredGranulesToCartWarning,
@@ -143,6 +149,8 @@ export default class GranuleList extends React.Component {
           styleFocus={styleShowMoreFocus}
         />
       ) : null
+
+    // console.log("results", results)
 
     return (
       <div style={styleCenterContent}>
@@ -174,16 +182,24 @@ export default class GranuleList extends React.Component {
           </div>
 
           <GranuleListLegend usedProtocols={usedProtocols} />
-          <ListView
+          <ListViewFxnal
             items={results}
-            resultType="collection files"
-            shown={returnedHits}
-            total={totalHits}
-            onItemSelect={selectCollection}
+            onItemSelect={(key) => {console.log("ListViewFxnal::onItemSelect::key", key)}}
             ListItemComponent={GranuleListResultContainer}
             GridItemComponent={null}
-            propsForItem={this.propsForResult}
+            propsForItem={this.propsForGranule}
           />
+          {/*<ListView*/}
+          {/*  items={results}*/}
+          {/*  resultType="collection files"*/}
+          {/*  shown={returnedHits}*/}
+          {/*  total={totalHits}*/}
+          {/*  onItemSelect={selectCollection}*/}
+          {/*  ListItemComponent={GranuleListResultContainer}*/}
+          {/*  GridItemComponent={null}*/}
+          {/*  propsForItem={this.propsForGranule}*/}
+          {/*/>*/}
+
           {showMoreButton}
         </div>
       </div>

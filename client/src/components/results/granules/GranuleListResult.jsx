@@ -327,6 +327,7 @@ class ListResult extends React.Component {
       <h2
         id={`ListResult::title::${itemId}`}
         key={`ListResult::title::${itemId}`}
+        className={"granuleListFocusedItem"}
         tabIndex={-1}
         ref={header => {
           this.focusItem = header
