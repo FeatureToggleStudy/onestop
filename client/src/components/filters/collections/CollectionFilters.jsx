@@ -98,7 +98,7 @@ class CollectionFilters extends React.Component {
       },
       {
         name: 'keywords',
-        heading: <FilterHeading icon={facetFilterIcon} text="Keywords" />,
+        heading: <FilterHeading icon={facetFilterIcon} text="Attributes" />,
         content: <CollectionFacetFilterContainer marginNest={'1em'} />,
       },
     ]
@@ -143,7 +143,7 @@ class CollectionFilters extends React.Component {
         onBlur={this.handleBlur}
         style={styleOverallHeadingApplied}
       >
-        Filters
+        Collection Filters
       </h2>
     )
 

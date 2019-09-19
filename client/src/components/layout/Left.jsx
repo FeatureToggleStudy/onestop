@@ -7,7 +7,7 @@ const defaultWidth = '128px'
 const defaultBackgroundColor = FilterColors.MEDIUM
 const defaultColor = '#111'
 
-const styleOpen = width => {
+const styleOpen = (width, customStyle) => {
   return {
     color: defaultColor,
     backgroundColor: defaultBackgroundColor,
@@ -16,10 +16,11 @@ const styleOpen = width => {
     width: width,
     minWidth: '3.236em',
     boxShadow: boxShadow,
+    ...customStyle,
   }
 }
 
-const styleClosed = width => {
+const styleClosed = (width, customStyle) => {
   return {
     backgroundColor: defaultBackgroundColor,
     transition: 'flex 0.2s linear',
@@ -27,6 +28,7 @@ const styleClosed = width => {
     width: width,
     position: 'relative',
     boxShadow: boxShadow,
+    ...customStyle,
   }
 }
 
@@ -41,7 +43,7 @@ const Left = props => {
   )
 
   // render
-  const {content, open, visible} = props
+  const {content, open, visible, style} = props
   const width = props.width ? props.width : defaultWidth
 
   if (!visible) {
@@ -49,7 +51,7 @@ const Left = props => {
   }
 
   return (
-    <div ref={ref} style={open ? styleOpen(width) : styleClosed(width)}>
+    <div ref={ref} style={open ? styleOpen(width, style) : styleClosed(width, style)}>
       {content}
     </div>
   )

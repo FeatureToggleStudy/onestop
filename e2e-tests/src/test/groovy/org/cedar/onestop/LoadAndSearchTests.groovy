@@ -20,28 +20,47 @@ class LoadAndSearchTests extends Specification {
 
   @Shared
   @ClassRule
-  DockerComposeContainer docker = new DockerComposeContainer(new File("src/test/resources/docker-compose-e2e.yml"))
-      .withLocalCompose(true)
-      .withPull(false)
+  DockerComposeContainer docker
 
-  static esApiBase = "http://localhost:9200"
   static searchApiBase = "http://localhost:8097/onestop-search"
-  static metadataApiBase = "http://localhost:8098/onestop-admin"
+  static adminApiBase = "http://localhost:8098/onestop-admin"
   static restTemplate = new RestTemplate()
+
+  static String dockerComposeFile() {
+    String file = System.getenv("docker.compose.file")
+    if(file == null) {
+      throw new RuntimeException("E2E test could not determine `docker.compose.file` from env.")
+    }
+    return file
+  }
+
+  static String esApiBase() {
+    String host = System.getenv("elasticsearch.host")
+    String port = System.getenv("elasticsearch.port")
+    if(host == null || port == null) {
+      throw new RuntimeException("E2E test could not determine `elasticsearch.host` or `elasticsearch.port` from env.")
+    }
+    return String.format("http://%s:%s", host, port)
+  }
 
   def setupSpec() {
     def pollingConditions = new PollingConditions()
     pollingConditions.setDelay(5)
     pollingConditions.within(60, {
-      restTemplate.exchange(RequestEntity.get(esApiBase.toURI()).build(), Map).statusCode == HttpStatus.OK
+      restTemplate.exchange(RequestEntity.get(esApiBase().toURI()).build(), Map).statusCode == HttpStatus.OK
       restTemplate.exchange(RequestEntity.get("${searchApiBase}/actuator/info".toURI()).build(), Map).statusCode == HttpStatus.OK
-      restTemplate.exchange(RequestEntity.get("${metadataApiBase}/actuator/info".toURI()).build(), Map).statusCode == HttpStatus.OK
+      restTemplate.exchange(RequestEntity.get("${adminApiBase}/actuator/info".toURI()).build(), Map).statusCode == HttpStatus.OK
     })
   }
 
   def setup() {
+    // run docker-compose test containers to be able to run e2e against
+    this.docker = new DockerComposeContainer(new File(dockerComposeFile()))
+        .withLocalCompose(true)
+        .withPull(false)
+
     // delete all indices between tests
-    def deleteRequest = RequestEntity.delete("${esApiBase}/_all".toURI()).build()
+    def deleteRequest = RequestEntity.delete("${esApiBase()}/_all".toURI()).build()
     def deleteResult = restTemplate.exchange(deleteRequest, Map)
   }
 
@@ -62,7 +81,7 @@ class LoadAndSearchTests extends Specification {
     ]
     def body = new LinkedMultiValueMap<String, Object>()
     paths.each { body.add("files", new ClassPathResource(it)) }
-    def loadRequest = RequestEntity.post("${metadataApiBase}/metadata".toURI())
+    def loadRequest = RequestEntity.post("${adminApiBase}/metadata".toURI())
         .contentType(MediaType.MULTIPART_FORM_DATA)
         .body(body)
     def loadResult = restTemplate.exchange(loadRequest, Map)
@@ -71,7 +90,7 @@ class LoadAndSearchTests extends Specification {
     loadResult.statusCode == HttpStatus.MULTI_STATUS
 
     when:
-    def updateRequest = RequestEntity.get("${metadataApiBase}/admin/index/search/update".toURI()).build()
+    def updateRequest = RequestEntity.get("${adminApiBase}/admin/index/search/update".toURI()).build()
     def updateResult = restTemplate.exchange(updateRequest, Map)
 
     then:
@@ -80,7 +99,7 @@ class LoadAndSearchTests extends Specification {
     sleep(60000) // to ensure the ETL finishes
 
     when:
-    def refreshRequest = RequestEntity.post("${esApiBase}/_refresh".toURI()).build()
+    def refreshRequest = RequestEntity.post("${esApiBase()}/_refresh".toURI()).build()
     restTemplate.exchange(refreshRequest, Map)
     def searchRequest = RequestEntity.post("${searchApiBase}/search/collection".toURI())
         .contentType(MediaType.APPLICATION_JSON)
@@ -106,7 +125,7 @@ class LoadAndSearchTests extends Specification {
     granuleData.size() == 2
 
     when:
-    def deleteRequest = RequestEntity.delete("${metadataApiBase}/metadata/${coopsCollection.id}".toURI()).build()
+    def deleteRequest = RequestEntity.delete("${adminApiBase}/metadata/${coopsCollection.id}".toURI()).build()
     def deleteResult = restTemplate.exchange(deleteRequest, Map)
 
     then:
@@ -139,11 +158,11 @@ class LoadAndSearchTests extends Specification {
     ]
     def body = new LinkedMultiValueMap<String, Object>()
     paths.each { body.add("files", new ClassPathResource(it)) }
-    def loadRequest = RequestEntity.post("${metadataApiBase}/metadata".toURI())
+    def loadRequest = RequestEntity.post("${adminApiBase}/metadata".toURI())
         .contentType(MediaType.MULTIPART_FORM_DATA)
         .body(body)
     def loadResult = restTemplate.exchange(loadRequest, Map)
-    def updateRequest = RequestEntity.get("${metadataApiBase}/admin/index/search/update".toURI()).build()
+    def updateRequest = RequestEntity.get("${adminApiBase}/admin/index/search/update".toURI()).build()
     def updateResult = restTemplate.exchange(updateRequest, Map)
 
     then:
@@ -153,7 +172,7 @@ class LoadAndSearchTests extends Specification {
     sleep(10000) // to ensure the ETL finishes
 
     when:
-    def refreshRequest = RequestEntity.post("${esApiBase}/_refresh".toURI()).build()
+    def refreshRequest = RequestEntity.post("${esApiBase()}/_refresh".toURI()).build()
     restTemplate.exchange(refreshRequest, Map)
     def searchRequest = RequestEntity.post("${searchApiBase}/search/collection".toURI())
         .contentType(MediaType.APPLICATION_JSON)
@@ -173,7 +192,7 @@ class LoadAndSearchTests extends Specification {
     def expectedJson = (new JsonSlurper()).parseText( ClassLoader.systemClassLoader.getResourceAsStream("test-iso-metadata.json").text)
 
     // TODO - Next time we come through here, think about consolidating all our matching xml and json
-    // TODO - test files into this subproject and then sharing with api-metadata and api-search
+    // TODO - test files into this subproject and then sharing with admin and search APIs
 
     then:
     resultWithoutId == expectedJson

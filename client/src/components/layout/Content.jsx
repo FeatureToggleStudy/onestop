@@ -23,6 +23,7 @@ export default class Content extends React.Component {
       leftOpen,
       leftVisible,
       leftCallback,
+      leftStyle,
       right,
       rightWidth,
       rightOpen,
@@ -41,6 +42,7 @@ export default class Content extends React.Component {
             open={leftOpen}
             visible={leftVisible}
             callback={leftCallback}
+            style={leftStyle}
             key={'left'}
           />,
           <Middle
