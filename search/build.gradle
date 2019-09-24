@@ -152,6 +152,7 @@ sourceSets {
 }
 
 task integrationTest(type: Test) {
+  dependsOn { jks }
 
   doFirst {
     // `CI` env var is typically "true" inside CircleCI, Travis, and other CI environments.
@@ -183,13 +184,15 @@ task integrationTest(type: Test) {
 }
 check.dependsOn integrationTest
 
-war {
+bootWar {
   dependsOn { ['generateOpenApi', 'generateJsonSchema'] }
-  enabled = true
+
+  from("${buildDir}/resources/main") {
+    include "onestop-request-schema.json"
+    into "WEB-INF/classes"
+  }
+
   archiveBaseName.set("${rootProject.name}-${project.name}")
-  // If the `archiveFileName` has not been explicitly set,
-  // the pattern for the name is:
-  // "${archiveBaseName}-${archiveAppendix}-${archiveVersion}-${archiveClassifier}.${archiveExtension}"
   archiveFileName.set("${archiveBaseName.get()}.${archiveExtension.get()}")
 }
 
@@ -240,6 +243,7 @@ task generateJsonSchema(type: NpmTask) {
   dependsOn { [ 'ensureRequestSchemaPath', 'npmInstall' ] }
   args = ['run', 'buildRequest']
 }
+tasks.assemble.dependsOn generateJsonSchema
 
 // NOTE: The 'build' task defined in package.json pipes the output directly to the output file
 task generateOpenApi(type: NpmTask) {
@@ -274,17 +278,12 @@ processResources {
   }
 }
 
-tasks.jib.dependsOn generateJsonSchema
-tasks.jibDockerBuild.dependsOn generateJsonSchema
-
 jib {
   // derive image repository
   String imageRegistryURL = "registry.hub.docker.com"
   String imageNamespace = "cedardevs"
   String imageName = "${rootProject.name}-${project.name}".toString()
-  // TODO: remove the `-jib` post-fix once we are sure everything is working smoothly with JIB
-  // this prevents us from clobbering things we already published to Docker Hub
-  String imageTag = "${project.version}-jib".toString()
+  String imageTag = "${project.version}".toString()
   String imageRepository = "${imageRegistryURL}/${imageNamespace}/${imageName}:${imageTag}".toString()
 
   from {
