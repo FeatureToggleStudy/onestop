@@ -26,12 +26,13 @@ const styleLinkKeying = {
 }
 
 class HeaderLink extends React.Component {
-  componentWillMount() {
-    this.setState({
+  constructor(props) {
+    super(props)
+    this.state = {
       hovering: false,
       focusing: false,
       keying: false,
-    })
+    }
   }
 
   handleMouseOver = event => {

@@ -57,16 +57,12 @@ const styleClearButtonFocus = {}
 class TextSearchField extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {value: props.value}
-  }
-
-  componentWillMount() {
-    this.setState({
-      value: this.props.value,
+    this.state = {
+      value: props.value,
       focusingText: false,
       hoveringClear: false,
       focusingClear: false,
-    })
+    }
   }
 
   componentWillReceiveProps(nextProps) {

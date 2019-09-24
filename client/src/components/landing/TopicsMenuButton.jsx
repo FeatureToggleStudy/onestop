@@ -40,11 +40,12 @@ const styleTopicButtonTitleHover = {
 }
 
 class TopicsMenuButton extends React.Component {
-  componentWillMount() {
-    this.setState({
+  constructor(props) {
+    super(props)
+    this.state = {
       hovering: false,
       focusing: false,
-    })
+    }
   }
 
   handleMouseOver = event => {

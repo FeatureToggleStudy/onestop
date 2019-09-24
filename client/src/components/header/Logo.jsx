@@ -109,13 +109,14 @@ const styleOnestopO = {
 //-- Component
 
 export default class Logo extends React.Component {
-  componentWillMount() {
-    this.setState({
+  constructor(props) {
+    super(props)
+    this.state = {
       focusingImage: false,
       focusingText: false,
       hoveringImage: false,
       hoveringText: false,
-    })
+    }
   }
 
   handleImageFocus = event => {

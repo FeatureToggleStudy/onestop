@@ -184,6 +184,8 @@ export default class ScriptDownloader extends React.Component {
       selectedSourceAndProtocol: 0,
       menuOpen: false,
       valueSelected: false,
+      showInfo: false,
+      focusingShowInfo: false,
     }
   }
 
@@ -231,13 +233,6 @@ export default class ScriptDownloader extends React.Component {
         ...prevState,
         menuOpen: false,
       }
-    })
-  }
-
-  componentWillMount() {
-    this.setState({
-      showInfo: false,
-      focusingShowInfo: false,
     })
   }
 

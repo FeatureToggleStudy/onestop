@@ -1,6 +1,7 @@
 import React from 'react'
 import A from '../common/link/Link'
 import {Link} from 'react-router-dom'
+import {processUrl} from '../../utils/urlUtils'
 
 const styleLink = {
   color: 'white',
@@ -18,10 +19,11 @@ const styleAFocus = {
 }
 
 class FooterLink extends React.Component {
-  componentWillMount() {
-    this.setState({
+  constructor(props) {
+    super(props)
+    this.state = {
       hovering: false,
-    })
+    }
   }
 
   handleMouseOver = event => {

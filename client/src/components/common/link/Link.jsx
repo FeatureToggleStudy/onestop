@@ -12,13 +12,14 @@ const stylePressDefault = {}
 const styleFocusDefault = {}
 
 class Link extends React.Component {
-  componentWillMount() {
-    this.setState({
+  constructor(props) {
+    super(props)
+    this.state = {
       hovering: false,
       pressing: false,
       pressingGlobal: false,
       focusing: false,
-    })
+    }
   }
 
   componentDidMount() {

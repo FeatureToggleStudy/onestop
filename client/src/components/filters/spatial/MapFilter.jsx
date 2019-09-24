@@ -99,6 +99,10 @@ export default class MapFilter extends React.Component {
     this.state = this.initialState()
   }
 
+  componentDidMount() {
+    this.mapGeoJSONToState(this.props.geoJSON)
+  }
+
   initialState() {
     return {
       internalGeoJSON: null,
@@ -108,10 +112,6 @@ export default class MapFilter extends React.Component {
       north: '',
       warning: '',
     }
-  }
-
-  componentWillMount() {
-    this.mapGeoJSONToState(this.props.geoJSON)
   }
 
   componentWillUnmount() {

@@ -33,10 +33,11 @@ const styleCartIconHover = {
 }
 
 export default class HeaderCartLink extends React.Component {
-  componentWillMount() {
-    this.setState({
+  constructor(props) {
+    super(props)
+    this.state = {
       hovering: false,
-    })
+    }
   }
 
   handleRedirectToCart = () => {

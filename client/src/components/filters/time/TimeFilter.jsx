@@ -108,8 +108,11 @@ const styleButton = {
 export default class TimeFilter extends React.Component {
   constructor(props) {
     super(props)
-
     this.state = this.initialState()
+  }
+
+  componentDidMount() {
+    this.mapPropsToState(this.props)
   }
 
   initialState() {
@@ -125,10 +128,6 @@ export default class TimeFilter extends React.Component {
       dateRangeValid: true,
       warning: '',
     }
-  }
-
-  componentWillMount() {
-    this.mapPropsToState(this.props)
   }
 
   componentWillReceiveProps(nextProps) {

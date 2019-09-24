@@ -101,11 +101,12 @@ const styleFlexRowR2L = {
 }
 
 class ListResult extends React.Component {
-  componentWillMount() {
-    this.setState({
+  constructor(props) {
+    super(props)
+    this.state = {
       focusing: false,
       videoPlaying: null,
-    })
+    }
   }
 
   componentDidMount() {

@@ -33,10 +33,11 @@ const styleClosed = width => {
 }
 
 export default class Right extends React.Component {
-  componentWillMount() {
-    this.setState({
-      open: this.props.open,
-    })
+  constructor(props) {
+    super(props)
+    this.state = {
+      open: props.open,
+    }
   }
 
   componentWillReceiveProps(nextProps) {

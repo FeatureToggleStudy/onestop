@@ -128,15 +128,10 @@ export default class CollectionCard extends React.Component {
     super(props)
     const {item} = this.props
     this.thumbnailUrl = processUrl(item.thumbnail)
-  }
-
-  componentWillMount() {
-    this.setState(prevState => {
-      return {
-        hovering: false,
-        focusing: false,
-      }
-    })
+    this.state = {
+      hovering: false,
+      focusing: false,
+    }
   }
 
   thumbnailStyle() {

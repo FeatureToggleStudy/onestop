@@ -168,15 +168,9 @@ const styleContentDefault = {
 export default class Tabs extends React.Component {
   constructor(props) {
     super(props)
-  }
-
-  componentWillMount() {
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        activeIndex: this.props.activeIndex ? this.props.activeIndex : 0,
-      }
-    })
+    this.state = {
+      activeIndex: props.activeIndex ? props.activeIndex : 0,
+    }
   }
 
   componentWillReceiveProps(nextProps) {
