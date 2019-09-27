@@ -51,7 +51,10 @@ const Left = props => {
   }
 
   return (
-    <div ref={ref} style={open ? styleOpen(width, style) : styleClosed(width, style)}>
+    <div
+      ref={ref}
+      style={open ? styleOpen(width, style) : styleClosed(width, style)}
+    >
       {content}
     </div>
   )

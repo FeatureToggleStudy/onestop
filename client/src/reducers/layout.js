@@ -9,6 +9,7 @@ import {
   SHOW_GRANULE_VIDEO,
   SET_LEFT_WIDTH,
   INTERACTIVE_MAP_HEIGHT,
+  SET_DRAWER_OPEN,
 } from '../actions/LayoutActions'
 
 import {LOCATION_CHANGE} from 'connected-react-router'
@@ -24,6 +25,7 @@ export const initialState = Immutable({
   headerMenuOpen: false,
   granuleVideo: null,
   interactiveMapHeight: 0,
+  drawerOpen: false,
 })
 
 export const layout = (state = initialState, action) => {
@@ -56,6 +58,8 @@ export const layout = (state = initialState, action) => {
       return Immutable.set(state, 'granuleVideo', action.granuleVideo)
     case SET_HEADER_MENU_OPEN:
       return Immutable.set(state, 'headerMenuOpen', action.value)
+    case SET_DRAWER_OPEN:
+      return Immutable.set(state, 'drawerOpen', action.open)
     default:
       return state
   }

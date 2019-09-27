@@ -99,11 +99,7 @@ class GranuleFilters extends React.Component {
       {
         name: 'location',
         heading: <FilterHeading icon={mapFilterIcon} text="Location" />,
-        content: (
-          <GranuleMapFilterContainer isOpen={this.state.location}>
-            <GranuleMapContainer selection={true} features={false} />
-          </GranuleMapFilterContainer>
-        ),
+        content: <GranuleMapFilterContainer isOpen={this.state.location} />,
       },
       {
         name: 'time',

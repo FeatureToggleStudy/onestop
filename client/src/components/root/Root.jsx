@@ -22,7 +22,7 @@ import CollectionSearchLoadingContainer from '../loading/CollectionSearchLoading
 
 import FooterContainer from '../footer/FooterContainer'
 
-import {SiteColors, styles} from '../../style/defaultStyles'
+import {SiteColors} from '../../style/defaultStyles'
 import {
   isHome,
   isSearch,
@@ -34,6 +34,7 @@ import NotFoundContainer from '../404/NotFoundContainer'
 
 import earth from '../../../img/Earth.jpg'
 import {browserUnsupported} from '../../utils/browserUtils'
+import CollectionMapContainer from '../filters/collections/CollectionMapContainer'
 
 const styleBrowserWarning = {
   background: SiteColors.WARNING,
@@ -50,91 +51,13 @@ const styleBrowserWarningParagraph = {
   textAlign: 'center',
 }
 
-const styleMapSpacer = (open, display, height) => {
-  return {
-    transition: open // immediate transition
-      ? 'height .5s 0.0s, width 0.2s 0.2s' // width needs to start opening before max-height completes, or the transitionEnd check will not be able to compute height
-      : 'width 0.2s 0.2s, height 0.2s 0.4s',
-    height: height,
-    width: '100%',
-    display: display,
-  }
-}
-
 // component
 export default class Root extends React.Component {
   constructor(props) {
     super(props)
-    const {showMap} = this.props
     // use state to prevent browser support check on every render
     this.state = {
       browserUnsupported: browserUnsupported(),
-      open: showMap,
-      display: showMap ? 'block' : 'none',
-      height: showMap ? 'initial' : '0em',
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    let {map} = this.state
-    if (map) {
-      map.invalidateSize()
-    } // Necessary to redraw map which isn't initially visible
-
-    console.log(
-      this.props.showMap,
-      nextProps.showMap,
-      this.props.mapHeight,
-      nextProps.mapHeight
-    )
-    if (
-      this.props.showMap != nextProps.showMap ||
-      this.props.mapHeight != nextProps.mapHeight
-    ) {
-      this.setState(prevState => {
-        const isOpen = prevState.open
-        const isDisplayed = prevState.display === 'block'
-        const shouldClose = isOpen && isDisplayed
-        const shouldOpen = !isOpen && !isDisplayed && nextProps.mapHeight != 0
-        if (!shouldOpen && !shouldClose) {
-          console.log('exit early')
-          return {}
-        }
-        console.log(
-          'isopen',
-          isOpen,
-          'map hieght',
-          nextProps.mapHeight,
-          'should open',
-          shouldOpen
-        )
-        // TODO there's something going on with the order of events, where height isn't available the first time we try to show it, which is why it doesn't open the spacer beneath yet...
-        // .... also it's not actually retriggering this code.....
-
-        // these transitions do occasionally have timing issues, but I've only seen them when rapidly toggling a single element on and off..
-        // the first time you open it, the map looks really really dumb - background opens way after. after that it's fine bc the mapheight is already in redux and such. eww.
-        if (shouldOpen) {
-          setTimeout(
-            () =>
-              this.setState({
-                height: nextProps.mapHeight,
-              }),
-            15
-          )
-        }
-        if (shouldClose) {
-          setTimeout(() => this.setState({display: 'none'}), 500)
-        }
-
-        const immediateTransition = shouldOpen
-          ? {display: 'block'}
-          : shouldClose
-            ? {
-                height: '0em',
-              }
-            : {}
-        return {open: !isOpen, ...immediateTransition}
-      })
     }
   }
 
@@ -159,37 +82,27 @@ export default class Root extends React.Component {
   }
 
   render() {
-    const {
-      location,
-      leftOpen,
-      rightOpen,
-      leftCallback,
-      showMap,
-      mapHeight,
-    } = this.props
+    const {location, leftOpen, rightOpen, leftCallback, showMap} = this.props
 
     const bannerVisible = isHome(location.pathname)
     const leftVisible = isSearch(location.pathname)
     const onGranuleListPage = isGranuleListPage(location.pathname)
     const rightVisible = false
 
-    const titleRow = (
-      <div style={styles.hideOffscreen}>
-        <Switch>
-          <Route path={ROUTE.collections.path} exact>
-            <h1 key="collection-result-title">Collection search results</h1>
-          </Route>
-          <Route path={ROUTE.granules.path}>
-            <h1 key="granule-result-title">Granule search results</h1>
-          </Route>
-        </Switch>
-      </div>
+    const hiddenAccessibilityHeading = (
+      <Switch>
+        <Route path={ROUTE.collections.path} exact>
+          <h1 key="collection-result-title">Collection search results</h1>
+        </Route>
+        <Route path={ROUTE.granules.path}>
+          <h1 key="granule-result-title">Granule search results</h1>
+        </Route>
+      </Switch>
     )
 
     const {open, display, height} = this.state
     const middle = (
       <div style={{width: '100%'}}>
-        <div style={styleMapSpacer(open, display, height)} />
         <Switch>
           {/*Each page inside this switch should have a Meta!*/}
           <Route path={`/:path(${validHomePaths.join('|')})`} exact>
@@ -259,7 +172,7 @@ export default class Root extends React.Component {
           bannerHeight={'30em'}
           bannerArcHeight={'15em'}
           bannerVisible={bannerVisible}
-          title={titleRow}
+          hiddenAccessibilityHeading={hiddenAccessibilityHeading}
           /* - Left - */
           left={
             leftOpen ? (
@@ -274,6 +187,12 @@ export default class Root extends React.Component {
           leftOpen={leftOpen}
           leftVisible={leftVisible}
           leftCallback={leftCallback}
+          /* - Drawer - */
+          drawer={<CollectionMapContainer selection={true} features={false} />}
+          drawerOpen={showMap}
+          onDrawerOpen={rect => {
+            console.log('onDrawerOpen::rect', rect)
+          }}
           /* - Middle - */
           middle={middle}
           /* - Right - */

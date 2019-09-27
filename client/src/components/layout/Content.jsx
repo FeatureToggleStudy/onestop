@@ -30,6 +30,9 @@ export default class Content extends React.Component {
       rightVisible,
       middle,
       middleMaxWidth,
+      drawer,
+      drawerOpen,
+      onDrawerOpen,
     } = this.props
     const styles = Object.assign({}, styleContent, style)
     return (
@@ -49,6 +52,9 @@ export default class Content extends React.Component {
             content={middle}
             maxWidth={middleMaxWidth}
             padding={padding}
+            drawer={drawer}
+            drawerOpen={drawerOpen}
+            onDrawerOpen={onDrawerOpen}
             key={'middle'}
           />,
           right ? (

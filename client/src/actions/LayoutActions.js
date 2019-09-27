@@ -65,3 +65,21 @@ export const showGranuleVideo = granuleId => {
     granuleVideo: granuleId,
   }
 }
+
+// drawer actions
+export const SET_DRAWER_OPEN = 'SET_DRAWER_OPEN'
+
+// drawer action creators
+export const openDrawer = isOpen => {
+  return {
+    type: SET_DRAWER_OPEN,
+    open: true,
+  }
+}
+
+export const closeDrawer = () => {
+  return {
+    type: SET_DRAWER_OPEN,
+    open: false,
+  }
+}

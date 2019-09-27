@@ -19,9 +19,7 @@ import {
 
 const styleMapFilter = {
   ...FilterStyles.MEDIUM,
-  ...{
-    padding: '0.618em',
-  },
+  padding: '0.618em',
 }
 
 const styleDescription = {
@@ -287,7 +285,9 @@ export default class MapFilter extends React.Component {
   }
 
   render() {
-    const showMapText = this.props.showMap ? 'Hide Map' : 'Show Map'
+    const {showMap, map} = this.props
+
+    const showMapText = showMap ? 'Hide Map' : 'Show Map'
 
     const buttonShowMap = (
       <Button
@@ -295,7 +295,7 @@ export default class MapFilter extends React.Component {
         icon={mapIcon}
         text={showMapText}
         onClick={() => {
-          this.props.showMap ? this.handleHideMap() : this.handleShowMap()
+          showMap ? this.handleHideMap() : this.handleShowMap()
         }}
         style={styleButtonShowMap}
         styleIcon={{
@@ -303,7 +303,7 @@ export default class MapFilter extends React.Component {
           height: '1.618em',
           marginRight: '0.618em',
         }}
-        ariaExpanded={this.props.showMap}
+        ariaExpanded={showMap}
       />
     )
 
@@ -372,9 +372,7 @@ export default class MapFilter extends React.Component {
           </legend>
           {inputColumn}
         </fieldset>
-        <div style={styleInteractiveMapContainer(this.props.leftOffset)}>
-          {this.props.children}
-        </div>
+        {map}
         <h4 style={{margin: '0.618em 0 0.618em 0.309em'}}>
           Additional Filtering Options:
         </h4>
